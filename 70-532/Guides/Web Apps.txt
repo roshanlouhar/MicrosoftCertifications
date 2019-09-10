@@ -1,0 +1,113 @@
+
+Azure web app
+	- App Service plan
+		- Free
+		- Shared
+		- Basic
+		- Standard
+		- Premium
+	- Deployment Options
+		- VSO (Continues integration)
+		- VS Web Deploy
+		- Files
+			- FTP
+			- BitBucket
+			- GitHub
+			- DropBox
+			- OneDrive etc
+	- Web.Config (in Application) + Application Settings (in Portal App Services)
+	- Deployment slots
+		- Only in Standard and Premium
+		- By default one public facing deployment slot
+		- 5 deployment slots
+	- Application Settings blade
+		- 64 bit and Always On can be enabled for Basic and Higher versions
+		- AutoSwap can be enabled only for Standard tier
+		- ARR Affinity
+			- By default On for Basic tier
+			- For State-full applications turn it On
+			- For performance improvement of State-less apps Turn it Off
+		- App Settings
+			- App settings values defined in web.config values will be merged here.
+			- Can override Web.config app settings values
+		- Connection Strings
+			- Connection strings defined in web.config values will be merged here.
+			- Can override Web.config Connection strings values
+		- Default documents
+		- Handler mappings 
+		- Virtual Directories and applications
+	- Scaling
+		- Scaling will applied to the entire app service plan 
+		- All apps using the same app service plan will scaled accordingly.
+		- Scale Up 
+			- Increase or decrease the service tier
+		- Scale Out
+			- Scale out option based on Tiers
+				- Standard
+					- Maximum 10 instances
+					- Instance count that I enter mannually
+					- CPU Percentage
+						- target CPU range
+						- Email Admin and Co-admin
+					- Schedule and Performance rules
+						- Add Schedule profile (fixed date, reccurance, Always )
+				-Basic
+					- Only mannual Scaling available
+					- Maximum 3 instances
+				- Shared and Free
+					- No Scale out option available
+	- Diagnostic Logs
+		- Can download logs using FTP
+		- Types of Logs are
+			- Application Logs (can be stored in Blob and File System)
+				- FileSystem
+					- Enable this for streaming logs
+					- Automatically turned off after 12 hrs
+					- Levels : Error, Warning, Information, Verbose
+				- Blob
+					- Levels : Error, Warning, Information, Verbose
+					- Select StorageAccount and a container, where you want to store logs
+			- Web Server Logging
+				- Also known as http logs or iis logs
+				- Options are
+					- Off
+					- Storage
+						- Select storage account and a container
+					- FileSystem
+			- Detailed Error Messages
+				- stored in the website's file system.
+				- HTML file
+				- Detailed information about error
+			- Failed Request tracing
+				- stored in the website's file system
+				- Diagnostic information on failed requests
+	- Web jobs
+		- Background process with the web site
+		- WebJob SDK 
+		- Types	
+			- Continues: runs continuesly untill stopped.
+			- Triggered: runs only when triggered.
+				- Triggered webjobs expose a hook that can be called to enable scenarios like scheduling.
+				- Triggered can be 
+					- mannually
+					- Scheduled
+		- It can be exe or scripts
+		
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						

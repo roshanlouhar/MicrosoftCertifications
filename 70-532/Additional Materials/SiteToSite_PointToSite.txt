@@ -1,0 +1,150 @@
+Resource Groups
+- Manage resources as a group
+- Allow users to access resources based on role
+Step 1-  Create Resource Group
+Name - CoreNetWork
+Subscription -Select your subscription
+Location - SouthEast Asia
+Done
+Step 2 - Create first VNET
+Click on Resource group
+Click on Add
+Search for VirtualNetworks
+Select Virtual Network
+Select Classic and Click Create
+Name : cnpprod
+Address space: 
+Address space CIDR block: 192.168.10.0/24
+Subnet name: Production
+Subnet CIDR block: 192.168.10.0/25
+click OK
+Resource group : CoreNetWork
+Subscription : Your valid subscription
+Location : SouthEast Asia
+Pin to dashboard and click create
+Select the VNET created
+Goto VPN Connections diagram, right click and select Pin to dashboard
+Goto Settings
+Addressspace> right click > pin to dashboard
+Subnets > right click > pin to dashboard
+DNS Servers> right click> pin to dashboard
+Step 3- Create second VNET
+Click on Resource group
+Click on Add
+Search for VirtualNetworks
+Select Virtual Network
+Select Classic and Click Create
+Name : cnpdevnet
+Address space: 
+Address space CIDR block: 192.168.20.0/24
+Subnet name: Development
+Subnet CIDR block: 192.168.20.0/25
+click OK
+Resource group : CoreNetWork
+Subscription : Your valid subscription
+Location : SouthEast Asia
+Pin to dashboard and click create
+Select the VNET created
+Goto VPN Connections diagram, right click and select Pin to dashboard
+Goto Settings
+Addressspace> right click > pin to dashboard
+Subnets > right click > pin to dashboard
+DNS Servers> right click> pin to dashboard
+Step 4: Create Connection between VNETS (First Production to Development)
+Click on Production VNET diagram
+In the New VPN Connection Blade
+Connection Type: Site to Site
+Local Site: 
+Name: cnpdev
+VPN Gateway IP: 1.1.1.1 (dummy will change later)
+Client address space: 192.168.20.0/24
+Click OK
+Select 'Create gateway immediately' checkbox
+It will open an additional option for gateway configuration
+Click on it
+Routing type: dynamic
+Size: Default
+Subnet: 
+Change subnet IP value as: /29 instead of 24
+click ok 
+Click OK
+click OK
+It will take an hour
+Step 5:
+Once the Gateway is created
+Copy the gateway IP address
+eg: 40.122.135.25
+Step 6:Create Connection between VNETs (Second:Development to Production)
+Click on Development VNET diagram
+In the New VPN Connection Blade
+Connection Type: Site to Site
+Local Site: 
+Name: cnpprod
+VPN Gateway IP: Paste the gateway IP address of the productin VNET
+Client address space: 192.168.10.0/24
+Click OK
+Select 'Create gateway immediately' checkbox
+It will open an additional option for gateway configuration
+Click on it
+Routing type: dynamic
+Size: Default
+Subnet: 
+Change subnet IP value as: /29 instead of 24
+click ok 
+Click OK
+click OK
+It will take an hour
+Step 7: 
+Copy the gateway IP addres of the Development gateway
+Step 8: Update the Production VPN Local site IP (Previously gave 1.1.1.1)
+Click on the Site to Site Icon of the Production VPN diagram (building icon)
+It open a new blade
+Click on the cnpdev > local site
+In the new blade update the VPN gateway IP address(1.1.1.1) to the copied value(IP of Development gateway)
+Click OK
+Step 9: Eastablish pre-shared key between two VPN endpoints
+Goto classic portal
+Goto All items
+Click om Group-CoreNetWork-cnpdevnet
+Click back level arrow
+Goto Local networks tab
+Open Notepad and create powershell script
+Copy the name o the LocalNetwork eg: 85ACD_cnpdev
+Set-AzureVnetGatewayKey -VNetName "Group CoreNetWork cnpprod" -LocalNetworksiteName 
+<Nameofthedevsite>
+-sharedKey abcdefgh1234
+Do the same for production Site key
+Goto powershell 
+Add-AzureAccount to authenticate
+Copy and execute the both command (set-AzureVNetGatewaykey)
+Go back to the new Portal
+Refresh
+You can see the Site to site connection is established
+Step 10 : Create a Point ti Site connection
+Click on the Production VPN diagram's Point to site Icon (Computer icon)
+Connection type: Point to Site
+Client address space: 192.168.30.0/25
+click OK
+Step 11: Configure the Client
+Click on the Point to site icon which is created previously.
+Manage certificate:
+We need client and root certificates
+Goto start menu type > mmc
+File menu -> Add or remove snap-ins 
+Select Certifcates and click add button
+Select my user account
+You can see certificates list
+under personal nothing will be there
+execute a makecert command
+For root certificate:
+makecert.exe -sky exchange -r -n "CN=CnPRoot" -pe -a sha256 -len 2048 -ss My "CnPRoot.cer"
+For client certificate:
+makecert.exe -n "CN=CnPClient" -pe -sky exchange -m 96 -ss My -in "CnpRoot" -is my -a sha256
+It add two certificates in client machine and creates a certificate in the folder for upload
+Goto portal 
+click on manage certificates	
+in the new blade click upload and select the certificate file
+You can see now it is uploaded
+Click on the Download VPN client icon. It download the script which needs to ru on client
+Once you complete the script execution You can see the VPN in your computers network settings.
+Clikc on it ad click on connect.

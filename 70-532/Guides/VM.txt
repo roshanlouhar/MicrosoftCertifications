@@ -1,0 +1,35 @@
+
+Virtual Machines
+	- Deployment
+		- Deployed inside cloud service
+		- Deployment methods
+			- Portal
+			- PowerShell
+			- REST API
+		- VM depends
+			- OS Disk
+			- Images
+			- Data disks
+		- Bigest size of OS disk will be 127GB
+		- Can attach multiple data disks (upto 1TB)
+		
+	- Images
+		- Generalize the VM using Sysprep
+		- Create Image and create new VM using it
+		
+	- Configuration Management
+		- Powershell DSC
+			- Add or remove features
+			- Agent custom extension
+			- Puppet and Chef
+			- ACL (Access Control List)
+			- Endpoint Management	
+				- Load balanced Set
+			- Availability Set
+	- VM Networking
+	
+	- Scaling
+	
+	- Storage
+	
+	- Management
